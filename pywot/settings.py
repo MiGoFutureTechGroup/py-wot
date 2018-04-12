@@ -10,7 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
-import os, sys
+import io, os, sys
+import json
 
 if sys.version_info.major == 2:
     sys.setdefaultencoding('utf-8')
@@ -81,12 +82,33 @@ WSGI_APPLICATION = 'pywot.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+with open(os.path.join(BASE_DIR, 'testcase.json'), 'r') as testcase:
+    config = json.loads(testcase.read())
+
+    DATABASES = {
+        'default': {
+            'ENGINE':       'django.db.backends.mysql',
+            'NAME':         'django_db',
+            'USER':         config['user'],
+            'PASSWORD':     config['pass'],
+            'HOST':         config['host'],
+            'PORT':         config['port'],
+        },
+        'realtime_db': {
+            'ENGINE':       'django.db.backends.mysql',
+            'NAME':         'realtime_db',
+            'USER':         config['user'],
+            'PASSWORD':     config['pass'],
+            'HOST':         config['host'],
+            'PORT':         config['port'],
+        },
     }
-}
+
+DATABASE_ROUTERS = [
+    'pywot.db.RealtimeDatabaseRouter',
+    'pywot.db.HistoryDatabaseRouter',
+]
+
 
 
 # Password validation
