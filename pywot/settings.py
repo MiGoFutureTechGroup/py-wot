@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """
 Django settings for pywot project.
 
@@ -54,6 +56,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'pywot.middlewares.jsonerror.JsonErrorMiddleware'
 ]
 
 ROOT_URLCONF = 'pywot.urls'
@@ -97,6 +101,14 @@ with open(os.path.join(BASE_DIR, 'testcase.json'), 'r') as testcase:
         'realtime_db': {
             'ENGINE':       'django.db.backends.mysql',
             'NAME':         'realtime_db',
+            'USER':         config['user'],
+            'PASSWORD':     config['pass'],
+            'HOST':         config['host'],
+            'PORT':         config['port'],
+        },
+        'history_db': {
+            'ENGINE':       'django.db.backends.mysql',
+            'NAME':         'history_db',
             'USER':         config['user'],
             'PASSWORD':     config['pass'],
             'HOST':         config['host'],
@@ -149,3 +161,29 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'pywot/static'),
+    os.path.join(BASE_DIR, 'upload_files'),
+]
+
+CSRF_HEADER_NAME = 'HTTP_X_CSRF_TOKEN'
+CSRF_USE_SESSIONS = True
+
+# [How to use sessions](https://docs.djangoproject.com/en/1.11/topics/http/sessions/)
+# 启用 Session 失效机制的前提
+SESSION_SAVE_EVERY_REQUEST = True
+# 只能二选一，Session 在浏览器关闭时失效或超时失效
+#SESSION_COOKIE_AGE = 60 * 30 # 30 分钟
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True # 关闭浏览器，Session cookie 失效
+# 禁止任何页面在<frame>，<iframe>，<object>中展现
+# [Clickjacking Protection](https://docs.djangoproject.com/en/dev/ref/clickjacking/)
+# https://developer.mozilla.org/zh-CN/docs/Web/HTTP/X-Frame-Options
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options#Browser_compatibility
+X_FRAME_OPTIONS = 'SAMEORIGIN'
+# Access-Control-Allow-Origin
+# https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Access-Control-Allow-Origin
+CORS_ORIGIN_WHITELIST = (
+    'google.com',
+    'localhost',
+    '127.0.0.1',
+)
