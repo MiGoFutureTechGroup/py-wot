@@ -105,3 +105,6 @@ venv.bak/
 
 # json
 *.json
+
+# Django Migrations
+migrations/
