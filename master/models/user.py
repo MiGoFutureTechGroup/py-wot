@@ -5,26 +5,45 @@ from django.conf import settings
 from django.utils import timezone as tz
 
 from master.fields import NinField
+from .creation import CreationModel
 
 # 用户详情
-class UserDetail(models.Model):
+class UserDetail(CreationModel):
 
-    class Meta:
-        pass
+    class Meta(CreationModel.Meta):
+        abstract = False
 
     # 所属用户 ID
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='user')
+    user = models.ForeignKey(\
+        settings.AUTH_USER_MODEL,
+        verbose_name=u'用户 ID',
+        on_delete=models.PROTECT,
+        related_name='user',
+        null=False)
 
     # 所属公司 ID
-    company = models.ForeignKey('Company', on_delete=models.PROTECT)
+    company = models.ForeignKey(\
+        'Company',
+        verbose_name=u'公司 ID',
+        on_delete=models.PROTECT,
+        null=True)
+
     # 入职时间
-    date_registration = models.DateField(auto_now=False, auto_now_add=True)
+    date_registration = models.DateField(\
+        verbose_name=u'入职时间',
+        auto_now=False,
+        auto_now_add=True)
+
     # 离职时间
-    date_resignation = models.DateField(default=None)
+    date_resignation = models.DateField(\
+        verbose_name=u'离职时间',
+        default=None,
+        null=True)
+
     # 身份证号
     nin = NinField()
 
-    # 创建者 ID
-    cuid = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='cuid')
-    # 创建时间
-    ctime = models.DateField(auto_now=False, auto_now_add=True)
+    ###########################################################################
+
+    def __str__(self):
+        return '{}'.format(self.user.username)
