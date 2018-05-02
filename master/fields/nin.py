@@ -51,5 +51,8 @@ class NinField(models.CharField):
     default_validators = [validate_nin,]
 
     def __init__(self, *args, **kwargs):
-        super().__init__(max_length=18)
+        super().__init__(\
+            verbose_name=u'身份证号',
+            max_length=18,
+            null=True)
 

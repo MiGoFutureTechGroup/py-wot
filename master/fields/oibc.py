@@ -17,5 +17,8 @@ class OibcField(models.CharField):
     default_validators = [validate_oibc,]
 
     def __init__(self, *args, **kwargs):
-        super().__init__(max_length=18)
+        super().__init__(\
+            verbose_name=u'组织机构代码',
+            max_length=18,
+            null=False)
 
