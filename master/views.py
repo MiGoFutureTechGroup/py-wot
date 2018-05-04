@@ -59,7 +59,7 @@ def _assign_all_fields_in_model_with_request(model_instance, request):
     _assign_all_fields_in_model(model_instance, _get_json_data_from_request(request))
 
 def _select_latest_rows(model_class, target_column_name):
-    query_set = model_class.objects.using('history_db')
+    query_set = model_class.objects
     table_name = model_class._meta.db_table
     raw_sql = '''
     select * from %s group by %s;
@@ -176,7 +176,7 @@ def _materials_real(request):
         page = 0
         pagesize = 20
         #qs = _select_latest_rows(RealMaterial, 'part_number')[page:page + pagesize]
-        qs = RealMaterial.objects.using('history_db').all()
+        qs = RealMaterial.objects.all()
 
         if qs == None:
             return JsonResponse(_create_json(status=404, status_text='No material found'))
@@ -207,7 +207,7 @@ def materials(request, is_real_material):
 def real_material(request, real_material_id):
     if request.method == 'GET':
         try:
-            qs = RealMaterial.objects.using('history_db').filter(id=real_material_id).latest()[:1]
+            qs = RealMaterial.objects.filter(id=real_material_id).latest()[:1]
             material = qs.get()
             data = {
                 'real_material': _generate_real_material_data(material),
