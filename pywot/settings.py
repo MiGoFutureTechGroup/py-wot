@@ -100,29 +100,7 @@ with open(os.path.join(BASE_DIR, 'testcase.json'), 'r') as testcase:
             'HOST':         config['host'],
             'PORT':         config['port'],
         },
-        'realtime_db': {
-            'ENGINE':       'django.db.backends.mysql',
-            'NAME':         'realtime_db',
-            'USER':         config['user'],
-            'PASSWORD':     config['pass'],
-            'HOST':         config['host'],
-            'PORT':         config['port'],
-        },
-        'history_db': {
-            'ENGINE':       'django.db.backends.mysql',
-            'NAME':         'history_db',
-            'USER':         config['user'],
-            'PASSWORD':     config['pass'],
-            'HOST':         config['host'],
-            'PORT':         config['port'],
-        },
     }
-
-DATABASE_ROUTERS = [
-    'pywot.db.RealtimeDatabaseRouter',
-    'pywot.db.HistoryDatabaseRouter',
-]
-
 
 
 # Password validation
