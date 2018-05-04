@@ -109,3 +109,22 @@ class RealMaterial(CreationModel):
 
     def __str__(self):
         return '{} {}[{}] {}'.format(self.brand, self.part_number, self.gauge, self.provider)
+
+class MaterialNameAlias(CreationModel):
+
+    class Meta(CreationModel.Meta):
+        abstract = False
+
+    # 物料 ID
+    material = models.ForeignKey(\
+        RealMaterial,
+        verbose_name=u'真实物料 ID',
+        on_delete=models.CASCADE,
+        null=False)
+
+    # 别名
+    part_number_alias = models.CharField(\
+        verbose_name=u'料号别名',
+        max_length=128,
+        null=False,
+        blank=False)

@@ -71,6 +71,11 @@ class QuotationDetail(models.Model):
         verbose_name=u'价格单位',
         max_length=4)
 
+    # 价格条件
+    # TODO 不同条件下有不同的价格
+    # 例如，期市铜价浮动会影响铜制品单价
+    price_condition = None
+
     # 税前单价
     price = models.FloatField(\
         verbose_name=u'税前单价')
@@ -78,6 +83,21 @@ class QuotationDetail(models.Model):
     # 税率
     tax_rate = models.FloatField(\
         verbose_name=u'外观特征')
+
+    ###########################################################################
+
+    # 批准时间
+    approval_time = models.DateTimeField(\
+        verbose_name=u'批准时间',
+        null=True)
+
+    # 批准人
+    approver = models.ForeignKey(\
+        settings.AUTH_USER_MODEL,
+        verbose_name=u'批准人 ID',
+        on_delete=models.PROTECT,
+        related_name='approver',
+        null=True)
 
     ###########################################################################
 
