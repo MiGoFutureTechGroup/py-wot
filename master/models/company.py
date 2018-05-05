@@ -10,6 +10,8 @@ class Company(CreationModel):
 
     class Meta(CreationModel.Meta):
         abstract = False
+        verbose_name = u'公司'
+        verbose_name_plural = u'公司'
 
     # 公司名称
     name = models.CharField(\
@@ -33,6 +35,8 @@ class Contact(CreationModel):
 
     class Meta(CreationModel.Meta):
         abstract = False
+        verbose_name = u'联系方式'
+        verbose_name_plural = u'联系方式'
 
     # 用户 ID
     user = models.ForeignKey(\

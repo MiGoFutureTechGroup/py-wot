@@ -12,6 +12,8 @@ class UserDetail(CreationModel):
 
     class Meta(CreationModel.Meta):
         abstract = False
+        verbose_name = u'用户详情'
+        verbose_name_plural = u'用户详情'
 
     # 所属用户 ID
     user = models.ForeignKey(\

@@ -12,6 +12,8 @@ class QuotationSheet(CreationModel):
     class Meta(CreationModel.Meta):
         abstract = False
         ordering = ('date_onset',)
+        verbose_name = u'报价单'
+        verbose_name_plural = u'报价单'
 
     # 需方公司 ID
     demander = models.ForeignKey(\
@@ -53,6 +55,8 @@ class QuotationDetail(models.Model):
 
     class Meta(CreationModel.Meta):
         abstract = False
+        verbose_name = u'报价明细'
+        verbose_name_plural = u'报价明细'
 
     # 报价单 ID
     quotation_sheet = models.ForeignKey(\
@@ -82,7 +86,7 @@ class QuotationDetail(models.Model):
 
     # 税率
     tax_rate = models.FloatField(\
-        verbose_name=u'外观特征')
+        verbose_name=u'税率')
 
     ###########################################################################
 

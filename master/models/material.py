@@ -11,6 +11,8 @@ class AbstractMaterial(CreationModel):
     class Meta(CreationModel.Meta):
         abstract = False
         ordering = ('name',)
+        verbose_name = u'抽象物料'
+        verbose_name_plural = u'抽象物料'
 
     # 品名
     name = models.CharField(\
@@ -42,6 +44,8 @@ class RealMaterial(CreationModel):
     class Meta(CreationModel.Meta):
         abstract = False
         ordering = ('material', 'provider',)
+        verbose_name = u'真实物料'
+        verbose_name_plural = u'真实物料'
 
     # 物料 ID
     material = models.ForeignKey(\
@@ -103,6 +107,7 @@ class RealMaterial(CreationModel):
 
     # 备注
     comment = models.CharField(\
+        verbose_name=u'备注',
         max_length=1024)
 
     ###########################################################################
@@ -114,6 +119,8 @@ class MaterialNameAlias(CreationModel):
 
     class Meta(CreationModel.Meta):
         abstract = False
+        verbose_name = u'物料别名'
+        verbose_name_plural = u'物料别名'
 
     # 物料 ID
     material = models.ForeignKey(\

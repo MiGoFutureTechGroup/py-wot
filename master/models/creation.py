@@ -12,9 +12,11 @@ class CreationModel(models.Model):
     # 创建者 ID
     cuid = models.ForeignKey(\
         settings.AUTH_USER_MODEL,
+        verbose_name=u'创建者 ID',
         on_delete=models.PROTECT)
 
     # 创建时间
-    ctime = models.DateField(\
+    ctime = models.DateTimeField(\
+        verbose_name=u'创建时间',
         auto_now=False,
         auto_now_add=True)
