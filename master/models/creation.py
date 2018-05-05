@@ -27,7 +27,8 @@ class CreationModel(models.Model):
             super().__init__(\
                 'CreationStatus',
                 verbose_name=u'状态',
-                on_delete=models.PROTECT)
+                on_delete=models.PROTECT,
+                null=True)
 
 class CreationStatus(models.Model):
 
