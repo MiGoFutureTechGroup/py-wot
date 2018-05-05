@@ -5,7 +5,8 @@ import json
 
 from django.shortcuts import render
 from django.http import JsonResponse
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, authenticate, login as authLogin, logout as authLogout
+from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.db.models.query_utils import DeferredAttribute
@@ -72,7 +73,7 @@ def users(request):
     if request.method == 'GET':
         qs = get_user_model().objects.all()
 
-        if qs == None:
+        if qs is None:
             return JsonResponse(_create_json(status=404, status_text='No user found'))
 
         data = {
@@ -146,7 +147,54 @@ def user(request, userId):
         else:
             return _unsupported_operation()
 
+################################################################
+
 def join(request):
+    if request.user.is_authenticated:
+        return JsonResponse(_create_json(status_code=403, status_text='Already logined'))
+
+    _data = _get_json_data_from_request(request)
+    _username = _data['username']
+    _email = _data['email']
+    _password = _data['password']
+
+    _user = get_user_model().objects.create_user(_username, _email, _password)
+    _user.save()
+
+    return JsonResponse(_create_json(status_code=200, status_text='Join successfully'))
+
+def login(request):
+    if request.user.is_authenticated:
+        return JsonResponse(_create_json(status_code=403, status_text='Already logined'))
+
+    _data = _get_json_data_from_request(request)
+    _username = _data['username']
+    _password = _data['password']
+
+    # 验证用户名和密码
+    user = authenticate(request, username=_username, password=_password)
+
+    if user is not None and user.is_active():
+        # 将用户实例附着到会话
+        authLogin(request, user)
+
+        return JsonResponse(_create_json(status_code=200, status_text='Login successfully'))
+
+    return JsonResponse(_create_json(status_code=401, status_text='Fail to login'))
+
+def logout(request):
+    if not request.user.is_authenticated:
+        return JsonResponse(_create_json(status_code=403, status_text='Not yet logined'))
+
+    authLogout(request)
+
+    return JsonResponse(_create_json(status_code=200, status_text='Logout successfully'))
+
+def change_password(request):
+    if request.user.is_active():
+        request.user.set_password(new_password)
+        return JsonResponse(_create_json(status_code=200, status_text='Password is changed'))
+
     return _unsupported_operation()
 
 ################################################################
@@ -178,7 +226,7 @@ def _materials_real(request):
         #qs = _select_latest_rows(RealMaterial, 'part_number')[page:page + pagesize]
         qs = RealMaterial.objects.all()
 
-        if qs == None:
+        if qs is None:
             return JsonResponse(_create_json(status=404, status_text='No material found'))
 
         data = {
