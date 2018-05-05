@@ -26,6 +26,9 @@ class Company(CreationModel):
     # 组织机构代码
     oibc = OibcField()
 
+    # 状态
+    status = CreationModel.StatusField()
+
     ###########################################################################
 
     def __str__(self):

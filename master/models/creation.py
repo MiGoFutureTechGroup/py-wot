@@ -20,3 +20,30 @@ class CreationModel(models.Model):
         verbose_name=u'创建时间',
         auto_now=False,
         auto_now_add=True)
+
+    class StatusField(models.ForeignKey):
+
+        def __init__(self, *args, **kwargs):
+            super().__init__(\
+                'CreationStatus',
+                verbose_name=u'状态',
+                on_delete=models.PROTECT)
+
+class CreationStatus(models.Model):
+
+    class Meta:
+        abstract = False
+        ordering = ('value',)
+
+    # 【主键】状态值
+    value = models.PositiveIntegerField(\
+        verbose_name=u'状态值',
+        primary_key=True,
+        null=False)
+
+    # 状态名
+    name = models.CharField(\
+        verbose_name=u'状态名',
+        max_length=32,
+        unique=True,
+        null=False)
