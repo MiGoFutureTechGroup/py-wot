@@ -9,7 +9,6 @@ from django.contrib.auth import get_user_model, authenticate, login as authLogin
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
-from django.db.models.query_utils import DeferredAttribute
 from django.db.models.expressions import RawSQL
 
 from .models import UserDetail
@@ -45,7 +44,7 @@ def _generate_user_list(qs):
     } for user in qs]
 
 def _list_all_fields_in_model(model_class):
-    return [field_name for field_name, field in model_class.__dict__.items() if isinstance(field, DeferredAttribute)]
+    return model_class._meta.get_fields()
 
 def _get_json_data_from_request(request):
     return json.loads(request.body.decode('utf-8'))
