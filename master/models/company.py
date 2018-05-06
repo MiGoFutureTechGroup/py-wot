@@ -3,7 +3,7 @@
 from django.db import models
 from django.conf import settings
 
-from master.fields import OibcField
+from master.fields import OibcField, StatusField
 from .creation import CreationModel
 
 class Company(CreationModel):
@@ -27,7 +27,7 @@ class Company(CreationModel):
     oibc = OibcField()
 
     # 状态
-    status = CreationModel.StatusField()
+    status = StatusField()
 
     ###########################################################################
 
