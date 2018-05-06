@@ -72,6 +72,7 @@ def _get_working_company(request):
 
 ################################################################
 
+@login_required
 def users(request):
     if request.method == 'GET':
         qs = get_user_model().objects.all()
@@ -93,6 +94,7 @@ def users(request):
     else:
         return _unsupported_operation()
 
+@login_required
 def user(request, userId):
     if request.method == 'OPTIONS':
         return JsonResponse(_create_json(data=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']))
@@ -185,6 +187,7 @@ def login(request):
 
     return JsonResponse(_create_json(status_code=401, status_text='Fail to login'))
 
+@login_required
 def logout(request):
     if not request.user.is_authenticated:
         return JsonResponse(_create_json(status_code=403, status_text='Not yet logined'))
@@ -193,6 +196,7 @@ def logout(request):
 
     return JsonResponse(_create_json(status_code=200, status_text='Logout successfully'))
 
+@login_required
 def change_password(request):
     if request.user.is_active():
         request.user.set_password(new_password)
@@ -247,6 +251,7 @@ def _materials_real(request):
 def _materials_abstract(request):
     return _unsupported_operation()
 
+@login_required
 def materials(request, is_real_material):
     if is_real_material == 1:
         return _materials_real(request)
@@ -254,6 +259,7 @@ def materials(request, is_real_material):
     else:
         return _materials_abstract(request)
 
+@login_required
 def real_material(request, real_material_id):
     if request.method == 'GET':
         try:
