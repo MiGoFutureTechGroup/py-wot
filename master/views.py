@@ -321,3 +321,7 @@ def quotations(request, role):
         return JsonResponse(_create_json(data=data))
 
     return _unsupported_operation()
+
+@login_required
+def quotation(request, role, quotation_id):
+    return _unsupported_operation()
