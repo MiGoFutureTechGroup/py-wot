@@ -11,7 +11,7 @@ from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.db.models.expressions import RawSQL
 
-from .models import UserDetail
+from .models import UserDetail, QuotationSheet, QuotationDetail, QuotationPrice
 
 def _create_json(status=200, status_text=None, data=None):
     return {
@@ -58,13 +58,17 @@ def _assign_all_fields_in_model(model_instance, json_data):
 def _assign_all_fields_in_model_with_request(model_instance, request):
     _assign_all_fields_in_model(model_instance, _get_json_data_from_request(request))
 
-def _select_latest_rows(model_class, target_column_name):
-    query_set = model_class.objects
+def _select_latest_rows(model_class, target_column_name, query_set=None):
+    query_set = query_set or model_class.objects
     table_name = model_class._meta.db_table
     raw_sql = '''
-    select * from %s group by %s;
+    SELECT * FROM %s GROUP BY %s;
     '''
     return query_set.annotate(val=RawSQL(raw_sql, (table_name, target_column_name,)))
+
+def _get_working_company(request):
+    detail = UserDetail.objects.filter(user=request.user).latest()
+    return detail.company
 
 ################################################################
 
@@ -253,7 +257,7 @@ def materials(request, is_real_material):
 def real_material(request, real_material_id):
     if request.method == 'GET':
         try:
-            qs = RealMaterial.objects.filter(id=real_material_id).latest()[:1]
+            qs = RealMaterial.objects.filter(id=real_material_id).latest()
             material = qs.get()
             data = {
                 'real_material': _generate_real_material_data(material),
@@ -275,5 +279,39 @@ def real_material(request, real_material_id):
 
 ################################################################
 
-def quotations(request):
-    pass
+def _select_quotations(request, role):
+    query_set = QuotationSheet.objects
+    company = _get_working_company(request)
+
+    if role == 'demander':
+        return query_set.filter(demander=company)
+    elif role == 'supplier':
+        return query_set.filter(supplier=company)
+    else:
+        return None
+
+@login_required
+def quotations(request, role):
+    if request.method == 'GET':
+        page = 0
+        pagesize = 20
+        qs = _select_quotations(request, role)
+
+        if qs is None:
+            qs = []
+
+        else:
+            qs = _select_latest_rows(QuotationSheet, 'quotation_number', qs)[page:page + pagesize]
+
+        data = {
+            # 总页数
+            'pages': 1,
+            # 每页显示的用户数
+            'pagesize': 20,
+            # 用户列表
+            'quotations': [quotation for quotation in qs],
+        }
+
+        return JsonResponse(_create_json(data=data))
+
+    return _unsupported_operation()
