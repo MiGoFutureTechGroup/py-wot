@@ -10,4 +10,6 @@ urlpatterns = [
 
     path('materials/<int:is_real_material>/', views.materials),
     path('material/1/<int:real_material_id>', views.real_material),
+
+    path('quotations/as/<str:role>/', views.quotations),
 ]
