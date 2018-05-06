@@ -2,7 +2,7 @@
 
 from .company import Company, Contact
 from .material import AbstractMaterial, RealMaterial
-from .quotation import QuotationSheet, QuotationDetail
+from .quotation import QuotationSheet, QuotationDetail, QuotationPrice
 from .user import UserDetail
 from .creation import CreationModel, CreationStatus
 
@@ -13,6 +13,7 @@ __all__ = [
     'RealMaterial',
     'QuotationSheet',
     'QuotationDetail',
+    'QuotationPrice',
     'UserDetail',
     'CreationModel',
     'CreationStatus',
