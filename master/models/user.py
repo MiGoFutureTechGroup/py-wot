@@ -68,12 +68,14 @@ class UserDetail(CreationModel):
 
     last_login = models.DateTimeField(\
         verbose_name=u'上次登录时间',
+        editable=False,
         null=True)
 
     last_login_ip = models.GenericIPAddressField(\
         verbose_name=u'上次登录 IP',
         protocol='both',
         unpack_ipv4=True,
+        editable=False,
         null=True)
 
     ###########################################################################

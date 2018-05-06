@@ -15,19 +15,27 @@ class QuotationSheet(CreationModel):
         verbose_name = u'报价单'
         verbose_name_plural = u'报价单'
 
+    # 报价单编号
+    quotation_number = models.CharField(\
+        verbose_name=u'报价单编号',
+        max_length=32,
+        null=False)
+
     # 需方公司 ID
     demander = models.ForeignKey(\
         'Company',
         verbose_name=u'需方公司 ID',
         on_delete=models.CASCADE,
-        related_name='demander')
+        related_name='demander',
+        null=False)
 
     # 供方公司 ID
     supplier = models.ForeignKey(\
         'Company',
         verbose_name=u'供方公司 ID',
         on_delete=models.CASCADE,
-        related_name='supplier')
+        related_name='supplier',
+        null=False)
 
     # 起效时间
     date_onset = models.DateField(\
@@ -35,9 +43,11 @@ class QuotationSheet(CreationModel):
         auto_now=True,
         auto_now_add=False)
 
-    # 有效时间（单位：天）
-    date_offset = models.PositiveSmallIntegerField(\
-        verbose_name=u'有效时间')
+    # 有效时间
+    # 本字段为空（NULL）时，表示该报价单直至新报价单生效前长期有效
+    date_offset = models.DurationField(\
+        verbose_name=u'有效时间',
+        null=True)
 
     # TODO 数字签章
 
