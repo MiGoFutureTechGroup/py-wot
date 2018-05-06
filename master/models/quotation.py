@@ -123,6 +123,52 @@ class QuotationDetail(models.Model):
 
 class QuotationPrice(models.Model):
 
+    # 铜
+    CU = 29
+    # 铝
+    AL = 13
+    # 锌
+    ZN = 30
+    # 铅
+    PB = 82
+    # 镍
+    NI = 28
+    # 锡
+    SN = 50
+    # 金
+    AU = 79
+    # 银
+    AG = 47
+    # 螺纹钢
+    RB = 10001
+    # 线材
+    WR = 10002
+    # 热轧卷板
+    HC = 10003
+    # 燃料油
+    FU = 10004
+    # 石油沥青
+    BU = 10005
+    # 天然橡胶
+    RU = 10006
+
+    CONDITION_TARGETS = (
+        (CU, u'铜'),
+        (AL, u'铝'),
+        (ZN, u'锌'),
+        (PB, u'铅'),
+        (NI, u'镍'),
+        (SN, u'锡'),
+        (AU, u'金'),
+        (AG, u'银'),
+        (RB, u'螺纹钢'),
+        (WR, u'线材'),
+        (HC, u'热轧卷板'),
+        (FU, u'燃料油'),
+        (BU, u'石油沥青'),
+        (RU, u'天然橡胶'),
+    )
+
     class Meta(CreationModel.Meta):
         abstract = False
         verbose_name = u'条件价格'
@@ -136,8 +182,9 @@ class QuotationPrice(models.Model):
         null=False)
 
     # 价格条件
-    condition_target = models.CharField(\
+    condition_target = models.PositiveSmallIntegerField(\
         verbose_name=u'价格条件',
+        choices=CONDITION_TARGETS,
         null=False)
 
     # 价格区间下界
