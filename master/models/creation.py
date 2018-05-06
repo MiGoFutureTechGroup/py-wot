@@ -26,6 +26,8 @@ class CreationStatus(models.Model):
     class Meta:
         abstract = False
         ordering = ('value',)
+        verbose_name = u'状态'
+        verbose_name_plural = u'状态清单'
 
     # 【主键】状态值
     value = models.PositiveIntegerField(\
@@ -39,3 +41,10 @@ class CreationStatus(models.Model):
         max_length=32,
         unique=True,
         null=False)
+
+    ###########################################################################
+
+    def __str__(self):
+        return '{} = {}'.format(\
+            self.value,
+            self.name)
