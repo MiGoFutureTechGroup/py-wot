@@ -1,11 +1,18 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime, timedelta
+from random import uniform
 
 from django.db import models
 from django.conf import settings
 
 from .creation import CreationModel
+
+def _generate_quotation_number():
+    return 'Q{}L{}'.format(\
+        datetime.now().strftime('%Y%m%d%H%M%S'),
+        uniform(0, 9999)
+    )
 
 class QuotationSheet(CreationModel):
 
@@ -19,6 +26,7 @@ class QuotationSheet(CreationModel):
     quotation_number = models.CharField(\
         verbose_name=u'报价单编号',
         max_length=32,
+        default=_generate_quotation_number,
         null=False)
 
     # 需方公司 ID
