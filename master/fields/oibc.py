@@ -20,5 +20,6 @@ class OibcField(models.CharField):
         super().__init__(\
             verbose_name=u'组织机构代码',
             max_length=18,
-            null=False)
+            null=False,
+            unique=True)
 
