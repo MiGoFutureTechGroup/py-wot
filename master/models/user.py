@@ -10,6 +10,14 @@ from .creation import CreationModel
 # 用户详情
 class UserDetail(CreationModel):
 
+    FEMALE = 2
+    MALE = 3
+
+    GENDER_CHOICES = (
+        (FEMALE, u'女'),
+        (MALE, u'男'),
+    )
+
     class Meta(CreationModel.Meta):
         abstract = False
         verbose_name = u'用户详情'
@@ -22,6 +30,17 @@ class UserDetail(CreationModel):
         on_delete=models.PROTECT,
         related_name='user',
         null=False)
+
+    # 性别
+    gender = models.PositiveSmallIntegerField(\
+        verbose_name=u'性别',
+        choices=GENDER_CHOICES,
+        null=True)
+
+    # 生日
+    birth = models.DateField(\
+        verbose_name=u'生日',
+        null=True)
 
     # 所属公司 ID
     company = models.ForeignKey(\
