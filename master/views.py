@@ -222,8 +222,7 @@ def _materials_real(request):
     if request.method == 'GET':
         page = 0
         pagesize = 20
-        #qs = _select_latest_rows(RealMaterial, 'part_number')[page:page + pagesize]
-        qs = RealMaterial.objects.all()
+        qs = _select_latest_rows(RealMaterial, 'part_number')[page:page + pagesize]
 
         if qs is None:
             return JsonResponse(_create_json(status=404, status_text='No material found'))
