@@ -11,7 +11,7 @@ from .creation import CreationModel
 def _generate_quotation_number():
     return 'Q{}L{}'.format(\
         datetime.now().strftime('%Y%m%d%H%M%S'),
-        uniform(0, 9999)
+        int(uniform(0, 9999))
     )
 
 class QuotationSheet(CreationModel):
@@ -25,7 +25,7 @@ class QuotationSheet(CreationModel):
     # 报价单编号
     quotation_number = models.CharField(\
         verbose_name=u'报价单编号',
-        max_length=32,
+        max_length=20,
         default=_generate_quotation_number,
         null=False)
 
