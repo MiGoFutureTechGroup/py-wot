@@ -16,12 +16,14 @@ class Company(CreationModel):
     # 公司名称
     name = models.CharField(\
         verbose_name=u'公司名称',
-        max_length=128)
+        max_length=128,
+        null=False)
 
     # 公司地址
     addr = models.CharField(\
         verbose_name=u'公司地址',
-        max_length=256)
+        max_length=256,
+        null=True)
 
     # 组织机构代码
     oibc = OibcField()
@@ -46,17 +48,20 @@ class Contact(CreationModel):
         settings.AUTH_USER_MODEL,
         verbose_name=u'用户 ID',
         related_name='user_contact',
-        on_delete=models.CASCADE)
+        on_delete=models.CASCADE,
+        null=False)
 
     # 联系方式类别（座机、手机、邮箱、QQ，等）
     tag = models.CharField(\
         verbose_name=u'联系方式类别',
-        max_length=16)
+        max_length=16,
+        null=False)
 
     # 联系方式值
     val = models.CharField(\
         verbose_name=u'联系方式取值',
-        max_length=32)
+        max_length=32,
+        null=False)
 
     ###########################################################################
 

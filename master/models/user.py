@@ -66,5 +66,17 @@ class UserDetail(CreationModel):
 
     ###########################################################################
 
+    last_login = models.DateTimeField(\
+        verbose_name=u'上次登录时间',
+        null=True)
+
+    last_login_ip = models.GenericIPAddressField(\
+        verbose_name=u'上次登录 IP',
+        protocol='both',
+        unpack_ipv4=True,
+        null=True)
+
+    ###########################################################################
+
     def __str__(self):
         return '{}'.format(self.user.username)

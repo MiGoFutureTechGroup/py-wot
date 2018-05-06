@@ -73,12 +73,15 @@ class QuotationDetail(models.Model):
     # 价格单位
     price_unit = models.CharField(\
         verbose_name=u'价格单位',
-        max_length=4)
+        max_length=4,
+        null=False)
 
     # 价格条件
     # TODO 不同条件下有不同的价格
     # 例如，期市铜价浮动会影响铜制品单价
-    price_condition = None
+    price_condition = models.BooleanField(\
+        verbose_name=u'条件价格',
+        default=False)
 
     # 税前单价
     price = models.FloatField(\
@@ -86,7 +89,8 @@ class QuotationDetail(models.Model):
 
     # 税率
     tax_rate = models.FloatField(\
-        verbose_name=u'税率')
+        verbose_name=u'税率',
+        null=True)
 
     ###########################################################################
 

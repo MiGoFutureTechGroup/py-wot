@@ -17,22 +17,26 @@ class AbstractMaterial(CreationModel):
     # 品名
     name = models.CharField(\
         verbose_name=u'品名',
-        max_length=128)
+        max_length=128,
+        null=False)
 
     # 料号
     part_number = models.CharField(\
         verbose_name=u'料号',
-        max_length=128)
+        max_length=128,
+        null=True)
 
     # 规格
     gauge = models.CharField(\
         verbose_name=u'规格',
-        max_length=128)
+        max_length=128,
+        null=True)
 
     # 备注
     comment = models.CharField(\
         verbose_name=u'备注',
-        max_length=1024)
+        max_length=1024,
+        null=True)
 
     ###########################################################################
 
@@ -76,39 +80,47 @@ class RealMaterial(CreationModel):
     # 规格
     gauge = models.CharField(\
         verbose_name=u'规格',
-        max_length=128)
+        max_length=128,
+        null=True)
 
     # 设计图纸
     design = models.CharField(\
         verbose_name=u'设计图纸',
-        max_length=1024)
+        max_length=1024,
+        null=True)
 
     # 实物照片
     photo = models.CharField(\
         verbose_name=u'实物照片',
-        max_length=1024)
+        max_length=1024,
+        null=True)
 
     # 包装量单位
     quantity_unit = models.CharField(\
         verbose_name=u'包装量单位',
-        max_length=4)
+        max_length=4,
+        null=False)
 
     # 最小包装量
     mpq = models.PositiveIntegerField(\
-        verbose_name=u'最小包装量')
+        verbose_name=u'最小包装量',
+        null=True)
 
     # 最小订单量
     moq = models.PositiveIntegerField(\
-        verbose_name=u'最小订单量')
+        verbose_name=u'最小订单量',
+        null=True)
 
     # 生产周期（单位：小时）
     pp = models.PositiveSmallIntegerField(\
-        verbose_name=u'生产周期（小时）')
+        verbose_name=u'生产周期（小时）',
+        null=True)
 
     # 备注
     comment = models.CharField(\
         verbose_name=u'备注',
-        max_length=1024)
+        max_length=1024,
+        null=True)
 
     ###########################################################################
 
