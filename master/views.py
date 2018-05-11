@@ -28,9 +28,8 @@ def ping(request):
 def _unsupported_operation():
     return JsonResponse(_create_json(status=500, status_text='Unsupported operation'))
 
-#def _generate_user_data(user_inst):
-def _generate_user_list(qs):
-    return [{
+def _generate_user_data(user):
+    return {
         'id': user.id,
         'username': user.username,
         'email': user.email,
@@ -41,7 +40,7 @@ def _generate_user_list(qs):
 
         'date_joined': user.date_joined,
         'last_login': user.last_login,
-    } for user in qs]
+    }
 
 def _list_all_fields_in_model(model_class):
     return model_class._meta.get_fields()
@@ -86,7 +85,7 @@ def users(request):
             # 每页显示的用户数
             'pagesize': 20,
             # 用户列表
-            'users': _generate_user_list(qs),
+            'users': [_generate_user_data(user) for user in qs],
         }
 
         return JsonResponse(_create_json(data=data))
@@ -114,7 +113,10 @@ def user(request, userId):
         except MultipleObjectsReturned:
             return JsonResponse(_create_json(status=500,
                     status_text='Too many users found',
-                    data={ 'id': userId, 'users': _generate_user_list(qs), }))
+                    data={
+                        'id': userId,
+                        'users': [_generate_user_data(user) for user in qs],
+                    }))
 
         if request.method == 'GET':
             data = {
