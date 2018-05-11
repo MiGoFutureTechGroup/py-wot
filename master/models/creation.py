@@ -25,12 +25,12 @@ class CreationStatus(models.Model):
 
     class Meta:
         abstract = False
-        ordering = ('value',)
+        ordering = ('id',)
         verbose_name = u'状态'
         verbose_name_plural = u'状态清单'
 
     # 【主键】状态值
-    value = models.PositiveIntegerField(\
+    id = models.PositiveIntegerField(\
         verbose_name=u'状态值',
         primary_key=True,
         null=False)
