@@ -156,7 +156,7 @@ def user(request, userId):
 
 def join(request):
     if request.user.is_authenticated:
-        return JsonResponse(_create_json(status_code=403, status_text='Already logined'))
+        return JsonResponse(_create_json(status=403, status_text='Already logined'))
 
     _data = _get_json_data_from_request(request)
     _username = _data['username']
@@ -166,11 +166,11 @@ def join(request):
     _user = get_user_model().objects.create_user(_username, _email, _password)
     _user.save()
 
-    return JsonResponse(_create_json(status_code=200, status_text='Join successfully'))
+    return JsonResponse(_create_json(status=200, status_text='Join successfully'))
 
 def login(request):
     if request.user.is_authenticated:
-        return JsonResponse(_create_json(status_code=403, status_text='Already logined'))
+        return JsonResponse(_create_json(status=403, status_text='Already logined'))
 
     _data = _get_json_data_from_request(request)
     _username = _data['username']
@@ -183,24 +183,24 @@ def login(request):
         # 将用户实例附着到会话
         authLogin(request, user)
 
-        return JsonResponse(_create_json(status_code=200, status_text='Login successfully'))
+        return JsonResponse(_create_json(status=200, status_text='Login successfully'))
 
-    return JsonResponse(_create_json(status_code=401, status_text='Fail to login'))
+    return JsonResponse(_create_json(status=401, status_text='Fail to login'))
 
 @login_required
 def logout(request):
     if not request.user.is_authenticated:
-        return JsonResponse(_create_json(status_code=403, status_text='Not yet logined'))
+        return JsonResponse(_create_json(status=403, status_text='Not yet logined'))
 
     authLogout(request)
 
-    return JsonResponse(_create_json(status_code=200, status_text='Logout successfully'))
+    return JsonResponse(_create_json(status=200, status_text='Logout successfully'))
 
 @login_required
 def change_password(request):
     if request.user.is_active():
         request.user.set_password(new_password)
-        return JsonResponse(_create_json(status_code=200, status_text='Password is changed'))
+        return JsonResponse(_create_json(status=200, status_text='Password is changed'))
 
     return _unsupported_operation()
 
