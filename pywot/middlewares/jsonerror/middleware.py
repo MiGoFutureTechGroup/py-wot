@@ -21,7 +21,7 @@ class JsonErrorMiddleware:
         # Code to be executed for each request/response after
         # the view is called.
         status_code = response.status_code
-        if status_code >= 400:
+        if status_code >= 300:
             return self.handleException(status_code, request, response)
 
         return response
