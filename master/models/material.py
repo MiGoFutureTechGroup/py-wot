@@ -3,7 +3,6 @@
 from django.db import models
 from django.conf import settings
 
-from .company import Company
 from .creation import CreationModel
 
 class AbstractMaterial(CreationModel):
@@ -14,29 +13,49 @@ class AbstractMaterial(CreationModel):
         verbose_name = u'抽象物料'
         verbose_name_plural = u'抽象物料'
 
+    # 物料 ID
+    # 用于跟踪“抽象物料”改动
+    material = models.ForeignKey(\
+        'self',
+        verbose_name=u'抽象物料 ID',
+        on_delete=models.CASCADE,
+        related_name='predecessor',
+        null=True)
+
     # 品名
     name = models.CharField(\
         verbose_name=u'品名',
         max_length=128,
-        null=False)
+        null=False,
+        blank=False)
+
+    # 品牌
+    brand = models.CharField(\
+        verbose_name=u'品牌',
+        max_length=16,
+        default='',
+        blank=True)
 
     # 料号
     part_number = models.CharField(\
         verbose_name=u'料号',
         max_length=128,
-        null=True)
+        default='',
+        blank=True)
 
     # 规格
     gauge = models.CharField(\
         verbose_name=u'规格',
         max_length=128,
-        null=True)
+        default='',
+        blank=True)
 
     # 备注
     comment = models.CharField(\
         verbose_name=u'备注',
         max_length=1024,
-        null=True)
+        default='',
+        blank=True)
 
     ###########################################################################
 
@@ -53,14 +72,15 @@ class RealMaterial(CreationModel):
 
     # 物料 ID
     material = models.ForeignKey(\
-        AbstractMaterial,
+        'AbstractMaterial',
         verbose_name=u'抽象物料 ID',
         on_delete=models.SET_NULL,
+        related_name='parent',
         null=True)
 
     # 供应商 ID
     provider = models.ForeignKey(\
-        Company,
+        'Company',
         verbose_name=u'供应商 ID',
         on_delete=models.CASCADE,
         null=False)
@@ -136,7 +156,7 @@ class MaterialNameAlias(CreationModel):
 
     # 物料 ID
     material = models.ForeignKey(\
-        RealMaterial,
+        'RealMaterial',
         verbose_name=u'真实物料 ID',
         on_delete=models.CASCADE,
         null=False)
