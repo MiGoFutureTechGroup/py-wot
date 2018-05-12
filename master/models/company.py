@@ -5,8 +5,9 @@ from django.conf import settings
 
 from master.fields import OibcField, StatusField
 from .creation import CreationModel
+from .approval import ApprovalTarget
 
-class Company(CreationModel):
+class Company(CreationModel, ApprovalTarget):
 
     class Meta(CreationModel.Meta):
         abstract = False

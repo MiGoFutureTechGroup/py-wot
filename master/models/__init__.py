@@ -5,6 +5,7 @@ from .material import AbstractMaterial, RealMaterial
 from .quotation import QuotationSheet, QuotationDetail, QuotationPrice
 from .user import UserDetail
 from .creation import CreationModel, CreationStatus
+from .approval import ApprovalModel, ApprovalTarget
 
 __all__ = [
     'Company',
@@ -17,4 +18,6 @@ __all__ = [
     'UserDetail',
     'CreationModel',
     'CreationStatus',
+    'ApprovalModel',
+    'ApprovalTarget',
 ]

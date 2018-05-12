@@ -7,6 +7,7 @@ from django.db import models
 from django.conf import settings
 
 from .creation import CreationModel
+from .approval import ApprovalTarget
 
 def _generate_quotation_number():
     return 'Q{}L{}'.format(\
@@ -14,7 +15,7 @@ def _generate_quotation_number():
         int(uniform(0, 9999))
     )
 
-class QuotationSheet(CreationModel):
+class QuotationSheet(CreationModel, ApprovalTarget):
 
     class Meta(CreationModel.Meta):
         abstract = False
@@ -69,7 +70,7 @@ class QuotationSheet(CreationModel):
             self.date_onset,
             self.date_onset + timedelta(self.date_offset))
 
-class QuotationDetail(models.Model):
+class QuotationDetail(ApprovalTarget):
 
     class Meta(CreationModel.Meta):
         abstract = False
@@ -111,21 +112,6 @@ class QuotationDetail(models.Model):
     # 税率
     tax_rate = models.FloatField(\
         verbose_name=u'税率',
-        null=True)
-
-    ###########################################################################
-
-    # 批准时间
-    approval_time = models.DateTimeField(\
-        verbose_name=u'批准时间',
-        null=True)
-
-    # 批准人
-    approver = models.ForeignKey(\
-        settings.AUTH_USER_MODEL,
-        verbose_name=u'批准人 ID',
-        on_delete=models.PROTECT,
-        related_name='approver',
         null=True)
 
     ###########################################################################

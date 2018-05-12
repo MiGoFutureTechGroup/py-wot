@@ -4,8 +4,9 @@ from django.db import models
 from django.conf import settings
 
 from .creation import CreationModel
+from .approval import ApprovalTarget
 
-class AbstractMaterial(CreationModel):
+class AbstractMaterial(CreationModel, ApprovalTarget):
 
     class Meta(CreationModel.Meta):
         abstract = False
@@ -62,7 +63,7 @@ class AbstractMaterial(CreationModel):
     def __str__(self):
         return '{} {}[{}]'.format(self.name, self.part_number, self.gauge)
 
-class RealMaterial(CreationModel):
+class RealMaterial(CreationModel, ApprovalTarget):
 
     class Meta(CreationModel.Meta):
         abstract = False
@@ -147,7 +148,7 @@ class RealMaterial(CreationModel):
     def __str__(self):
         return '{} {}[{}] {}'.format(self.brand, self.part_number, self.gauge, self.provider)
 
-class MaterialNameAlias(CreationModel):
+class MaterialNameAlias(CreationModel, ApprovalTarget):
 
     class Meta(CreationModel.Meta):
         abstract = False

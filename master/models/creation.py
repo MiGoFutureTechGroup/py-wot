@@ -46,5 +46,5 @@ class CreationStatus(models.Model):
 
     def __str__(self):
         return '{} = {}'.format(\
-            self.value,
+            self.id,
             self.name)
