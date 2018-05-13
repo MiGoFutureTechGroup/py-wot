@@ -146,8 +146,8 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'upload_files'),
 ]
 
-CSRF_HEADER_NAME = 'HTTP_X_CSRF_TOKEN'
-CSRF_USE_SESSIONS = True
+CSRF_COOKIE_NAME = 'csrftoken'
+CSRF_USE_SESSIONS = False
 
 # [How to use sessions](https://docs.djangoproject.com/en/1.11/topics/http/sessions/)
 # 启用 Session 失效机制的前提
