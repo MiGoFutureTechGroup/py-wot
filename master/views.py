@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import F, Q, OuterRef, Subquery, Value as V, Count, Min, Sum, Avg
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.db.models.expressions import RawSQL
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 from .models import UserDetail
 
@@ -20,6 +21,7 @@ def _create_json(status=200, status_text=None, data=None):
         'data': data or {},
     }
 
+@ensure_csrf_cookie
 def ping(request):
     return JsonResponse(_create_json(data={
         'timestamp': datetime.now(),
@@ -64,6 +66,7 @@ def _get_working_company_id(request):
 ################################################################
 
 #@login_required
+@ensure_csrf_cookie
 def users(request):
     if request.method == 'GET':
         qs = get_user_model().objects.all()
@@ -104,6 +107,7 @@ def users(request):
         return _unsupported_operation()
 
 #@login_required
+@ensure_csrf_cookie
 def user(request, userId):
     if request.method == 'OPTIONS':
         return JsonResponse(_create_json(data=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']))
@@ -166,6 +170,7 @@ def user(request, userId):
 
 ################################################################
 
+@ensure_csrf_cookie
 def join(request):
     if request.method == 'POST':
         if request.user.is_authenticated:
@@ -183,6 +188,7 @@ def join(request):
 
     return _unsupported_operation()
 
+@ensure_csrf_cookie
 def login(request):
     if request.method == 'POST':
         if request.user.is_authenticated:
@@ -206,6 +212,7 @@ def login(request):
     return _unsupported_operation()
 
 #@login_required
+@ensure_csrf_cookie
 def logout(request):
     if request.method == 'POST':
         if not request.user.is_authenticated:
@@ -218,6 +225,7 @@ def logout(request):
     return _unsupported_operation()
 
 #@login_required
+@ensure_csrf_cookie
 def change_password(request):
     if request.method == 'POST' and request.user.is_active():
         request.user.set_password(new_password)
@@ -248,6 +256,7 @@ def _generate_real_material_data(material):
     }
 
 #@login_required
+@ensure_csrf_cookie
 def materials_real(request):
     if request.method == 'GET':
         page = 0
@@ -284,6 +293,7 @@ def _generate_abstract_material_data(material):
     }
 
 #@login_required
+@ensure_csrf_cookie
 def materials_abstract(request):
     if request.method == 'GET':
         page = 0
@@ -307,6 +317,7 @@ def materials_abstract(request):
     return _unsupported_operation()
 
 #@login_required
+@ensure_csrf_cookie
 def real_material(request, real_material_id):
     if request.method == 'GET':
         try:
@@ -365,6 +376,7 @@ def _generate_quotation_data(quotation):
     }
 
 #@login_required
+@ensure_csrf_cookie
 def quotations(request, role):
     if request.method == 'GET':
         page = 0
@@ -393,5 +405,6 @@ def quotations(request, role):
     return _unsupported_operation()
 
 #@login_required
+@ensure_csrf_cookie
 def quotation(request, role, quotation_id):
     return _unsupported_operation()
