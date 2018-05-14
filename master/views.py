@@ -194,14 +194,14 @@ def login(request):
         if request.user.is_authenticated:
             return JsonResponse(_create_json(status=403, status_text='Already logined'))
 
-        _data = _get_json_data_from_request(request)
+        _data = _get_json_data_from_request(request)['data']
         _username = _data['username']
         _password = _data['password']
 
         # 验证用户名和密码
         user = authenticate(request, username=_username, password=_password)
 
-        if user is not None and user.is_active():
+        if user is not None and user.is_active:
             # 将用户实例附着到会话
             authLogin(request, user)
 
