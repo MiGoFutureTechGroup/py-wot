@@ -192,7 +192,9 @@ def join(request):
 def login(request):
     if request.method == 'POST':
         if request.user.is_authenticated:
-            return JsonResponse(_create_json(status=403, status_text='Already logined'))
+            return JsonResponse(_create_json(status=403, status_text='Already logined', data={
+                    'login_state': request.user.is_authenticated,
+                }))
 
         _data = _get_json_data_from_request(request)['data']
         _username = _data['username']
@@ -205,11 +207,17 @@ def login(request):
             # 将用户实例附着到会话
             authLogin(request, user)
 
-            return JsonResponse(_create_json(status=200, status_text='Login successfully'))
+            return JsonResponse(_create_json(status=200, status_text='Login successfully'), data={
+                    'login_state': request.user.is_authenticated,
+                })
 
-        return JsonResponse(_create_json(status=401, status_text='Fail to login'))
+        return JsonResponse(_create_json(status=401, status_text='Fail to login'), data={
+                'login_state': request.user.is_authenticated,
+            })
 
-    return _unsupported_operation()
+    return _unsupported_operation(data={
+            'login_state': request.user.is_authenticated,
+        })
 
 #@login_required
 @ensure_csrf_cookie
