@@ -215,6 +215,21 @@ def login(request):
                 'login_state': request.user.is_authenticated,
             }))
 
+    elif request.method == 'GET':
+        login_state = request.user.is_authenticated
+
+        if login_state:
+            response_status = 200
+            response_status_text = 'Already logined'
+
+        else:
+            response_status = 401
+            response_status_text = 'Not yet logged in'
+
+        return JsonResponse(_create_json(status=response_status, status_text=response_status_text, data={
+                'login_state': login_state,
+            }))
+
     return _unsupported_operation(data={
             'login_state': request.user.is_authenticated,
         })
