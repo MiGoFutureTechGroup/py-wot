@@ -27,8 +27,8 @@ def ping(request):
         'timestamp': datetime.now(),
     }))
 
-def _unsupported_operation():
-    return JsonResponse(_create_json(status=500, status_text='Unsupported operation'))
+def _unsupported_operation(data=None):
+    return JsonResponse(_create_json(status=500, status_text='Unsupported operation', data=data))
 
 def _generate_user_data(user):
     return {
@@ -207,13 +207,13 @@ def login(request):
             # 将用户实例附着到会话
             authLogin(request, user)
 
-            return JsonResponse(_create_json(status=200, status_text='Login successfully'), data={
+            return JsonResponse(_create_json(status=200, status_text='Login successfully', data={
                     'login_state': request.user.is_authenticated,
-                })
+                }))
 
-        return JsonResponse(_create_json(status=401, status_text='Fail to login'), data={
+        return JsonResponse(_create_json(status=401, status_text='Fail to login', data={
                 'login_state': request.user.is_authenticated,
-            })
+            }))
 
     return _unsupported_operation(data={
             'login_state': request.user.is_authenticated,
