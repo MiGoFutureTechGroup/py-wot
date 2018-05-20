@@ -65,7 +65,7 @@ def _get_working_company_id(request):
 
 ################################################################
 
-#@login_required
+@login_required
 @ensure_csrf_cookie
 def users(request):
     if request.method == 'GET':
@@ -106,7 +106,17 @@ def users(request):
     else:
         return _unsupported_operation()
 
-#@login_required
+@login_required
+@ensure_csrf_cookie
+def new_user(request):
+    return _unsupported_operation()
+
+@login_required
+@ensure_csrf_cookie
+def new_role(request):
+    return _unsupported_operation()
+
+@login_required
 @ensure_csrf_cookie
 def user(request, userId):
     if request.method == 'OPTIONS':
@@ -234,7 +244,7 @@ def login(request):
             'login_state': request.user.is_authenticated,
         })
 
-#@login_required
+@login_required
 @ensure_csrf_cookie
 def logout(request):
     if request.method == 'POST':
@@ -247,7 +257,7 @@ def logout(request):
 
     return _unsupported_operation()
 
-#@login_required
+@login_required
 @ensure_csrf_cookie
 def change_password(request):
     if request.method == 'POST' and request.user.is_active():
@@ -278,7 +288,7 @@ def _generate_real_material_data(material):
         'ctime': material.ctime,
     }
 
-#@login_required
+@login_required
 @ensure_csrf_cookie
 def materials_real(request):
     if request.method == 'GET':
@@ -315,7 +325,7 @@ def _generate_abstract_material_data(material):
         'ctime': material.ctime,
     }
 
-#@login_required
+@login_required
 @ensure_csrf_cookie
 def materials_abstract(request):
     if request.method == 'GET':
@@ -339,7 +349,7 @@ def materials_abstract(request):
 
     return _unsupported_operation()
 
-#@login_required
+@login_required
 @ensure_csrf_cookie
 def real_material(request, real_material_id):
     if request.method == 'GET':
@@ -398,7 +408,7 @@ def _generate_quotation_data(quotation):
         'ctime': quotation.ctime,
     }
 
-#@login_required
+@login_required
 @ensure_csrf_cookie
 def quotations(request, role):
     if request.method == 'GET':
@@ -427,7 +437,7 @@ def quotations(request, role):
 
     return _unsupported_operation()
 
-#@login_required
+@login_required
 @ensure_csrf_cookie
 def quotation(request, role, quotation_id):
     return _unsupported_operation()
