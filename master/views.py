@@ -2,11 +2,11 @@
 
 from datetime import datetime
 import json
+from functools import wraps
 
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.contrib.auth import get_user_model, authenticate, login as authLogin, logout as authLogout
-from django.contrib.auth.decorators import login_required
 from django.db.models import F, Q, OuterRef, Subquery, Value as V, Count, Min, Sum, Avg
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.db.models.expressions import RawSQL
@@ -62,6 +62,31 @@ def _assign_all_fields_in_model_with_request(model_instance, request):
 def _get_working_company_id(request):
     detail = UserDetail.objects.filter(user=request.user).latest()
     return detail.company_id
+
+# decorator
+def login_required(view_func=None):
+
+    print('login_required is invoked!')
+
+    def decorator(vfunc):
+
+        @wraps(vfunc)
+        def _wrapped_view(request, *args, **kwargs):
+            if request.user.is_authenticated:
+                print('User already logged in.', request.user.is_authenticated)
+                return vfunc(request, *args, **kwargs)
+
+            print('User not yet logged in!', request.user.is_authenticated)
+            return JsonResponse(_create_json(status=302, data={
+                    'redirect': '/login/',
+                }))
+
+        return _wrapped_view
+
+    if view_func:
+        return decorator(view_func)
+
+    return decorator
 
 ################################################################
 
