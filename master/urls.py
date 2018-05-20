@@ -6,7 +6,9 @@ urlpatterns = [
     path('ping/', views.ping),
 
     path('users/', views.users),
-    path('user/<int:userId>/', views.user),
+    path('users/new/user', views.new_user),
+    path('users/new/role', views.new_role),
+    path('users/<int:userId>/', views.user),
 
     path('join/', views.join),
     path('login/', views.login),
