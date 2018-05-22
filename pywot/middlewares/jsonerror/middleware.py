@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from http import HTTPStatus
+import json
 
 from django.http import JsonResponse
 
@@ -58,6 +59,10 @@ def _log(request, response):
             request.META.get('HTTP_USER_AGENT', ''),
         ))
 
+def _sync_status(response):
+    response.status_code = json.loads(response.content).get('status_code', response.status_code)
+    return response
+
 class JsonErrorMiddleware:
     '''
     将 Http404 等页面转化为 JsonResponse
@@ -78,7 +83,9 @@ class JsonErrorMiddleware:
         # the view is called.
         status_code = response.status_code
         if status_code >= 400:
-            return self.handleException(status_code, request, response)
+            response = self.handleException(status_code, request, response)
+
+        response = _sync_status(response)
 
         return response
 
